@@ -33,7 +33,8 @@ Here we can see, how phrase is censored and then missing words are predicted.
 Also, it's hard to store all the toxic words in practice.
 - Cases when replacing toxic word would inevitably lead to sense loss.
 Such cases require to reconstruct the full sentence.
-- Toxic words meaning does not affect prediction. Thus, sentence content may be twisted.
+- Toxic words meaning is not preserved during prediction. Thus, sentence content may be twisted.
+- Sometimes complex words with suffixes are not masked correctly.
 
 To overcome these problems, it was decided to develop an improved model.
 ## Results
