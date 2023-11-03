@@ -1,4 +1,4 @@
-from simple_BERT import detox
+from simple_BERT import detox as simple_detox
 
 
 if __name__ == '__main__':
@@ -12,7 +12,8 @@ if __name__ == '__main__':
                  "Damn! It's fucking great!",
                  "Are you fucking kidding me?",
                  "She is always bitchy about him!"]
-    print('Censored phrases:')
-    print('\n'.join(detox(sentences, return_mask=True)))
-    print('Detoxified phrases:')
-    print('\n'.join(detox(sentences)))
+    print('Original:')
+    print('\n'.join(sentences))
+    print('-' * 150)
+    print('simple_BERT:')
+    print('\n'.join(simple_detox(sentences)))
