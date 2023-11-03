@@ -10,8 +10,9 @@ if __name__ == '__main__':
                  "Stop shit-talking, you stupid motherfucker!",
                  "There is only one word to describe this - fuck...",
                  "Damn! It's fucking great!",
-                 "Are you fucking kidding me?"]
+                 "Are you fucking kidding me?",
+                 "She is always bitchy about him!"]
     print('Censored phrases:')
-    print('\n'.join(detox(sentences, True)))
+    print('\n'.join(detox(sentences, return_mask=True)))
     print('Detoxified phrases:')
     print('\n'.join(detox(sentences)))

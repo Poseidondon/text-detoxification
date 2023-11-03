@@ -2,7 +2,7 @@ import torch
 import sys
 sys.path.append("..")
 
-from transformers import AutoTokenizer, BertForMaskedLM
+from transformers import BertTokenizer, BertForMaskedLM
 from data.utils import load_words
 from pathlib import Path
 from nltk import word_tokenize
@@ -27,7 +27,7 @@ def get_tokens(tokenizer, words: list):
 
 
 MODEL = BertForMaskedLM.from_pretrained("bert-base-uncased")
-TOKENIZER = AutoTokenizer.from_pretrained("bert-base-uncased")
+TOKENIZER = BertTokenizer.from_pretrained("bert-base-uncased")
 
 BAN_WORDS_PATH = Path(__file__).parent.parent.parent / 'data' / 'external' / 'toxic_words.txt'
 BAN_WORDS = load_words(BAN_WORDS_PATH)

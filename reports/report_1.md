@@ -6,6 +6,13 @@ Replace toxic words, using *Masked Language Model*.
 1. Iterate through words and mask them if they are part of a set of toxic words
 2. Use modified [transformers.BertForMaskedLM](https://huggingface.co/docs/transformers/model_doc/bert#transformers.BertForMaskedLM)
 to predict missing words, such that it does not predict toxic words.
+### Code
+Code for this algorithm is contained at [simple_BERT.py](../src/models/simple_BERT.py).
+Run it using:
+```python
+from simple_BERT import detox
+detox("Toxic text here", return_mask=False)
+```
 ### Examples
 Here we can see, how phrase is censored and then missing words are predicted.
 ```python
@@ -27,5 +34,7 @@ Also, it's hard to store all the toxic words in practice.
 - Cases when replacing toxic word would inevitably lead to sense loss.
 Such cases require to reconstruct the full sentence.
 - Toxic words meaning does not affect prediction. Thus, sentence content may be twisted.
+
+To overcome these problems, it was decided to develop an improved model.
 ## Results
 ...

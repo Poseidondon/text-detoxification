@@ -1,3 +1,6 @@
 {
-  "data/external/toxic_words.txt": "https://github.com/s-nlp/detox/blob/main/emnlp2021/style_transfer/condBERT/vocab/toxic_words.txt"
+  "data/external/toxic_words.txt": "https://github.com/s-nlp/detox/blob/main/emnlp2021/style_transfer/condBERT/vocab/toxic_words.txt",
+  "data/external/train": "https://github.com/s-nlp/detox/tree/main/emnlp2021/data/train",
+  "data/external/test": "https://github.com/s-nlp/detox/tree/main/emnlp2021/data/test",
+  "src/data/s-nlp_condBERT": "https://github.com/s-nlp/detox/blob/main/emnlp2021/style_transfer/condBERT/condbert_compile_vocab.ipynb"
 }
