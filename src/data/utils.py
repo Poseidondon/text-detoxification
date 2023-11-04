@@ -14,4 +14,8 @@ def load_words(path):
 
 
 def cosine_similarity(v1, v2):
-    return np.dot(v1, v2) / (np.linalg.norm(v1) * np.linalg.norm(v2))
+    denum = np.linalg.norm(v1) * np.linalg.norm(v2)
+    if denum != 0:
+        return np.dot(v1, v2) / denum
+    else:
+        return 0

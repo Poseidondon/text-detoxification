@@ -42,3 +42,10 @@ python predict_model.py -f input.txt -o out.txt
 # or
 python predict_model.py -s "I like that f***ing show!"
 ```
+
+## Evaluation
+CLI
+```shell
+cd src/models
+python evaluation.py
+```

@@ -45,6 +45,66 @@ class CondBERT:
         w2c = np.array(list(self.word2coef.values()))
         self.w2c_stats = w2c.min(), w2c.max()
 
+    def toxicity_scores(self, ids):
+        """
+        Helper to calculate toxicity scores for each id
+
+        :param ids: list of token ids
+        :return: toxicity score for each token in a sentence and ordered dict,
+                 containing score for each word in a sentence
+        """
+
+        tokens = self.tokenizer.convert_ids_to_tokens(ids)
+
+        # contains toxicity score for each token in a sentence
+        tox_scores = []
+        # ordered dict, containing score for each word in a sentence
+        words = []
+        for i, (id, tok) in enumerate(zip(ids, tokens)):
+            # skip special symbols
+            if tok.startswith('['):
+                tox_scores.append(0)
+                continue
+
+            # tox_score = token toxicity score
+            tox_score = (self.tok_toxicities[id] - self.tox_stats[0]) / (self.tox_stats[1] - self.tox_stats[0])
+            if not tok.startswith('##'):
+                # if word found in dict -> tox_score = mean of word2coef and token toxicities scores
+                if tok in self.word2coef:
+                    coef_score = (self.word2coef[tok] - self.w2c_stats[0]) / (self.w2c_stats[1] - self.w2c_stats[0])
+                    tox_score = (tox_score + coef_score) / 2
+                words.append([tox_score, [i]])
+            else:
+                if i == 0:
+                    raise ValueError(f'Something went wrong with')
+                else:
+                    # suffix case, they should have score more or equal to the previous word parts
+                    tox_score = max(tox_score, tox_scores[-1])
+                    words[-1][0] = tox_score
+                    words[-1][1].append(i)
+            tox_scores.append(tox_score)
+
+        return tox_scores, words
+
+    def sentence_toxicity_score(self, sentence):
+        """
+        Evaluation function which calculates toxicity score for the whole sentence.
+
+        :param sentence: sentence to calculate toxicity score of
+        :return: mean toxicity score over al tokens in the sentence
+        """
+
+        if not sentence:
+            return 0
+
+        # encode sentence
+        ids = self.tokenizer.encode(sentence, add_special_tokens=False)
+
+        # calculate toxicity scores
+        tox_scores, _ = self.toxicity_scores(ids)
+
+        return sum(tox_scores) / len(tox_scores)
+
     def mask(self, sentences, threshold, min_words):
         """
         Mask (censor) each sentence
@@ -60,35 +120,9 @@ class CondBERT:
         for text in sentences:
             # encode sentence
             ids = self.tokenizer.encode(text, add_special_tokens=True)
-            tokens = self.tokenizer.convert_ids_to_tokens(ids)
 
-            # contains toxicity score for each token in a sentence
-            tox_scores = []
-            # ordered dict, containing score for each word in a sentence
-            words = []
-            for i, (id, tok) in enumerate(zip(ids, tokens)):
-                # skip special symbols
-                if tok.startswith('['):
-                    tox_scores.append(0)
-                    continue
-
-                # tox_score = toxicity score
-                tox_score = (self.tok_toxicities[id] - self.tox_stats[0]) / (self.tox_stats[1] - self.tox_stats[0])
-                if not tok.startswith('##'):
-                    # if word found in dict -> tox_score = mean of word2coef and token toxicities scores
-                    if tok in self.word2coef:
-                        coef_score = (self.word2coef[tok] - self.w2c_stats[0]) / (self.w2c_stats[1] - self.w2c_stats[0])
-                        tox_score = (tox_score + coef_score) / 2
-                    words.append([tox_score, [i]])
-                else:
-                    if i == 0:
-                        raise ValueError(f'Something went wrong with: {text}')
-                    else:
-                        # suffix case, they should have score more or equal to the previous word parts
-                        tox_score = max(tox_score, tox_scores[-1])
-                        words[-1][0] = tox_score
-                        words[-1][1].append(i)
-                tox_scores.append(tox_score)
+            # compute toxicity scores
+            tox_scores, words = self.toxicity_scores(ids)
 
             # if tox_score above threshold -> mask that token
             tox_scores = torch.tensor(tox_scores)

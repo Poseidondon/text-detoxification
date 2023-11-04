@@ -9,7 +9,8 @@ Some functions could be partially copied from there.
 
 ## Dataset
 Instead of [dataset provided](../data/raw/filtered.tsv) by assignment,
-[another dataset](https://github.com/s-nlp/detox/tree/0ebaeab817957bb5463819bec7fa4ed3de9a26ee/emnlp2021/data/train) was used.
+[another dataset](https://github.com/s-nlp/detox/tree/0ebaeab817957bb5463819bec7fa4ed3de9a26ee/emnlp2021/data/train) was used,
+because it's not parallel which is better for proposed model.
 
 ## Data preprocessing
 *Code implementation is located in [build_vocab.py](../src/data/build_vocab.py)*
@@ -74,7 +75,7 @@ Where `load_condBERT()` is a class builder to create object with default paramet
 `CondBERT.detox(sentences)` is a simple interface,
 connecting `CondBERT.mask()` and `CondBERT.translate()`.
 
-## Inference evaluation
+## Inference examples
 As compared to [naive approach](report_1.md), **CondBERT** gives more sensible and accurate results:
 ```python
 >>> condBERT.detox("Damn! It's fucking great!")
@@ -86,6 +87,24 @@ As compared to [naive approach](report_1.md), **CondBERT** gives more sensible a
 >>> condBERT.detox("There is only one word to describe this - fuck...")
 'there is only one word to describe this - christ...'
 ```
+
+## Evaluation
+*Code implementation is located in [evaluation.py](../src/models/evaluation.py)*
+
+A total of 2 evaluation metrics were used:
+1. **Mean toxicity score**. Calculate mean toxicity score all tokens in text as in `CondBERT.mask()`.
+2. **Sentence similarity**. To determine sentence similarity, **sentence transformers**
+module was used: this method uses pre-trained models to generate sentence embeddings.
+Then *cosine similarity* of those embeddings is calculated.
+
+Running [evaluation](../src/models/evaluation.py) on the [test dataset](../data/external/test) gave the following results:
+
+|                     Dataset                     | Input toxicity | Output toxicity | Similarity |
+|:-----------------------------------------------:|:--------------:|:---------------:|:----------:|
+| [Normal](../data/external/test/test_normal.txt) |     0.111      |      0.106      |   0.981    |
+|  [Toxic](../data/external/test/test_toxic.txt)  |     0.187      |      0.135      |   0.901    |
+
+As demonstrated, **toxicity** is successfully reduced and semantic **similarity** is preserved.
 
 ## Results
 Majority of the problems that [naive approach](report_1.md) had, were successfully solved and
