@@ -8,8 +8,8 @@ This project ideas are inspired by [S-NLP condBERT](https://github.com/s-nlp/det
 Some functions could be partially copied from there.
 
 ## Dataset
-Instead of [dataset provided by assignment](../data/raw/filtered.tsv),
-the [full dataset](https://github.com/s-nlp/detox/tree/0ebaeab817957bb5463819bec7fa4ed3de9a26ee/emnlp2021/data/train) was used.
+Instead of [dataset provided](../data/raw/filtered.tsv) by assignment,
+[another dataset](https://github.com/s-nlp/detox/tree/0ebaeab817957bb5463819bec7fa4ed3de9a26ee/emnlp2021/data/train) was used.
 
 ## Data preprocessing
 *Code implementation is located in [build_vocab.py](../src/data/build_vocab.py)*
