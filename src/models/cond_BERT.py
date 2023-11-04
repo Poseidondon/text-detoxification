@@ -1,8 +1,13 @@
 import numpy as np
 import torch
+import fasttext
 import fasttext.util
 import sys
+import transformers
+
+fasttext.FastText.eprint = lambda x: None
 sys.path.append("..")
+transformers.logging.set_verbosity_error()
 
 from pathlib import Path
 from transformers import BertTokenizer, BertForMaskedLM
@@ -139,7 +144,7 @@ class CondBERT:
 
         return self.tokenizer.decode(ids[0], skip_special_tokens=True)
 
-    def detox(self, sentences, detect_threshold=0.2, detect_min_words=1, top_n=20):
+    def detox(self, sentences, detect_threshold=None, detect_min_words=None, top_n=None):
         """
         Interface, connecting self.mask() and self.translate()
 
@@ -149,6 +154,12 @@ class CondBERT:
         :param top_n: top_n value of self.translate()
         :return: list of detoxed words
         """
+        if detect_threshold is None:
+            detect_threshold = 0.2
+        if detect_min_words is None:
+            detect_min_words = 1
+        if top_n is None:
+            top_n = 20
 
         if is_str := isinstance(sentences, str):
             sentences = [sentences]
@@ -165,6 +176,9 @@ class CondBERT:
             return detoxed[0]
         else:
             return detoxed
+
+    def __call__(self, *args, **kwargs):
+        return self.detox(*args, **kwargs)
 
 
 def load_condBERT(model_name='bert-base-uncased', vocab_dirname=None):
