@@ -1,4 +1,5 @@
 from simple_BERT import detox as simple_detox
+from cond_BERT import load_condBERT
 
 
 if __name__ == '__main__':
@@ -17,3 +18,6 @@ if __name__ == '__main__':
     print('-' * 150)
     print('simple_BERT:')
     print('\n'.join(simple_detox(sentences)))
+    condBERT = load_condBERT()
+    print('cond_BERT:')
+    print('\n'.join(condBERT.detox(sentences)))

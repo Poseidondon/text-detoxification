@@ -1,1 +1,1 @@
-# TODO
+# No model training is required
