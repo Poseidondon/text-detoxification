@@ -141,7 +141,7 @@ class CondBERT:
 
     def detox(self, sentences, detect_threshold=0.2, detect_min_words=1, top_n=20):
         """
-        Interface, connecting self.mask() and self.translate
+        Interface, connecting self.mask() and self.translate()
 
         :param sentences: sentences to be detoxed
         :param detect_threshold: threshold value of self.mask()
