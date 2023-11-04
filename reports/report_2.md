@@ -4,7 +4,7 @@ This solution is heavily based on the *naive approach* that is thoroughly descri
 in the [Solution Building Report](report_1.md).
 Please, make sure you are familiar with it before proceeding.
 
-This project ideas are inspired by [S-NLP condBERT](https://github.com/s-nlp/detox/tree/0ebaeab817957bb5463819bec7fa4ed3de9a26ee/emnlp2021/style_transfer/condBERT).
+This project ideas are inspired by [s-nlp condBERT](https://github.com/s-nlp/detox/tree/0ebaeab817957bb5463819bec7fa4ed3de9a26ee/emnlp2021/style_transfer/condBERT).
 Some functions could be partially copied from there.
 
 ## Dataset
@@ -93,7 +93,7 @@ As compared to [naive approach](report_1.md), **CondBERT** gives more sensible a
 
 A total of 2 evaluation metrics were used:
 1. **Mean toxicity score**. Calculate mean toxicity score all tokens in text as in `CondBERT.mask()`.
-2. **Sentence similarity**. To determine sentence similarity, **sentence transformers**
+2. **Sentence similarity**. To determine sentence similarity, [sentence transformers](https://pypi.org/project/sentence-transformers/)
 module was used: this method uses pre-trained models to generate sentence embeddings.
 Then *cosine similarity* of those embeddings is calculated.
 
