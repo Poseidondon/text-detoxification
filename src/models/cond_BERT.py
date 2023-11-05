@@ -11,8 +11,12 @@ transformers.logging.set_verbosity_error()
 
 from pathlib import Path
 from transformers import BertTokenizer, BertForMaskedLM
-from data.load_vocab import load_toxicities, load_word2coef
-from data.utils import cosine_similarity
+try:
+    from data.load_vocab import load_toxicities, load_word2coef
+    from data.utils import cosine_similarity
+except ModuleNotFoundError:
+    from src.data.load_vocab import load_toxicities, load_word2coef
+    from src.data.utils import cosine_similarity
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 VOCAB_DIRNAME = Path(__file__).parent.parent.parent / 'data' / 'interim' / 'vocab'
