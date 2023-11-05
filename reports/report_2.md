@@ -25,7 +25,7 @@ pipe = make_pipeline(CountVectorizer(), LogisticRegression(max_iter=1000))
 That makes the coefficients for each word represent its toxicity,
 where higher coefficient means more toxic word.
 ### Token toxicity
-In second method, for each token **counted number of occurrences** in a toxic and normal datasets.
+In second method, for each token **number of occurrences** in a toxic and normal datasets is counted.
 Then, token toxicity is got by: **token_toxicity = toxic_count / total_count**.
 Later in the program *log odds ratio* is applied to those values.
 ### Code
